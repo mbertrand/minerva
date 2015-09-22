@@ -29,12 +29,12 @@ before_install:
     - cd $HOME/build
     # remove existing girder dir, it remains from caching operations
     - rm -rf girder
-    - git clone https://github.com/girder/girder.git
+    - travis_retry git clone https://github.com/girder/girder.git
     - mv Kitware/minerva girder/plugins
 
     # clone romanesco
     - cd $HOME/build/girder/plugins
-    - git clone https://github.com/Kitware/romanesco.git
+    - travis_retry git clone https://github.com/Kitware/romanesco.git
     - cd $HOME/build
 
     - cd girder
@@ -50,7 +50,7 @@ before_install:
 
     # mongo
     - pushd "${HOME}"
-    - curl "https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGO_VERSION}.tgz" | gunzip -c | tar x
+    - travis_retry curl "https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGO_VERSION}.tgz" | gunzip -c | tar x
     - cd mongodb-*/bin && export PATH="${PWD}:${PATH}"
     - popd
     - mkdir /tmp/db
@@ -59,13 +59,13 @@ before_install:
 
     # cmake
     - cd $HOME
-    - curl "http://www.cmake.org/files/v3.1/cmake-3.1.0-Linux-x86_64.tar.gz" | gunzip -c | tar x
+    - travis_retry curl "http://www.cmake.org/files/v3.1/cmake-3.1.0-Linux-x86_64.tar.gz" | gunzip -c | tar x
     - cd cmake-*/bin && export PATH="${PWD}:${PATH}"
     - cmake --version
 
     # install spark
     - cd $HOME
-    - wget http://www.scala-lang.org/files/archive/scala-2.10.5.tgz
+    - travis_retry wget http://www.scala-lang.org/files/archive/scala-2.10.5.tgz
     - tar xzvf scala-2.10.5.tgz -C ~
     - export SCALA_HOME=$HOME/scala-2.10.5
     - export PATH=$PATH:$SCALA_HOME/bin
@@ -78,11 +78,11 @@ before_install:
     - sleep 3
     - $SPARK_HOME/sbin/start-slave.sh worker1 spark://localhost:7077
 
+install:
     # global npm install
     - npm install -g npm@next
     - npm --version
 
-install:
     - cd $HOME/build/girder
     - scripts/InstallPythonRequirements.py --mode=dev --ignore-plugins=${IGNORE_PLUGINS}
     # create the Romanesco config and enable spark plugin
