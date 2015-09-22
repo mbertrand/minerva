@@ -59,7 +59,9 @@ before_install:
 
     # cmake
     - cd $HOME
-    - travis_retry curl "http://www.cmake.org/files/v3.1/cmake-3.1.0-Linux-x86_64.tar.gz" | gunzip -c | tar x
+    - travis_retry curl "http://cmake.org/files/v3.1/cmake-3.1.0-Linux-x86_64.tar.gz" -o cmake-3.1.0-Linux-x86_64.tar.gz
+    - gunzip cmake-3.1.0-Linux-x86_64.tar.gz
+    - tar -xf cmake-3.1.0-Linux-x86_64.tar
     - cd cmake-*/bin && export PATH="${PWD}:${PATH}"
     - cmake --version
 
