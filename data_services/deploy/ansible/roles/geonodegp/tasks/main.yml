@@ -8,6 +8,10 @@
     - assemble tasks definition
     - collectstatic in geonodegp
 
+- name: create data storage directory
+  file: path=/data owner=root group=www-data state=directory mode=0775
+  sudo: yes
+
 - name: rename the vassals-default.ini file to the app name
   file: src=/etc/uwsgi/vassals-default.skel dest=/etc/uwsgi/geonodegp.ini owner=www-data group=www-data state=link
   notify: restart uwsgi
